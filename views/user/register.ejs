@@ -1,0 +1,33 @@
+<link rel="stylesheet" href="/css/test-forms.css">
+
+<div class="aptitude-container">
+    <div class="question-card">
+        <div class="form-header">
+            <h2>Register</h2>
+            <p>Please fill in your details to register</p>
+        </div>
+
+        <form class="aptitude-form" action="/register" method="POST">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="text" id="phone" name="phone" required pattern="[0-9]{10}">
+            </div>
+
+            <div class="form-group">
+                <label for="instagram">Instagram Username</label>
+                <input type="text" id="instagram" name="instagram" required>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="button button-primary">
+                    <span class="button-text">Register</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
