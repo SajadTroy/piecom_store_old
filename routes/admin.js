@@ -107,4 +107,45 @@ router.get('/dashboard', notAuthorized, async (req, res) => {
     }
 });
 
+router.get('/products', notAuthorized, async (req, res) => {
+    try {
+        const user = await User.findById(req.session.user.id);
+        if (!user?.isAdmin) {
+            return res.redirect('/');
+        }
+
+        const products = await Product.find().sort({ createdAt: -1 });
+        
+        res.render('admin/products', {
+            layout: 'admin-layout',
+            user,
+            products
+        });
+    } catch (error) {
+        console.error('Error loading products:', error);
+        res.status(500).send('Error loading products');
+    }
+});
+
+// Update stock
+router.patch('/products/stock/:id', notAuthorized, async (req, res) => {
+    try {
+        const { stockQuantity } = req.body;
+        await Product.findByIdAndUpdate(req.params.id, { stockQuantity });
+        res.status(200).send('Stock updated');
+    } catch (error) {
+        res.status(500).send('Error updating stock');
+    }
+});
+
+// Delete product
+router.delete('/products/:id', notAuthorized, async (req, res) => {
+    try {
+        await Product.findByIdAndDelete(req.params.id);
+        res.status(200).send('Product deleted');
+    } catch (error) {
+        res.status(500).send('Error deleting product');
+    }
+});
+
 module.exports = router;
