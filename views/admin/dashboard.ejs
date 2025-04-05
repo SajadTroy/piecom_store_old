@@ -11,7 +11,9 @@
             <div class="analytics-info">
                 <h3>Total Orders</h3>
                 <p class="analytics-value"><%= totalOrders %></p>
-                <p class="analytics-change positive">+12.5% from last month</p>
+                <p class="analytics-change <%= changes.orders >= 0 ? 'positive' : 'negative' %>">
+                    <%= changes.orders >= 0 ? '+' : '' %><%= changes.orders.toFixed(1) %>% from last month
+                </p>
             </div>
         </div>
 
@@ -24,7 +26,9 @@
             <div class="analytics-info">
                 <h3>Total Revenue</h3>
                 <p class="analytics-value">₹<%= totalRevenue %></p>
-                <p class="analytics-change positive">+8.2% from last month</p>
+                <p class="analytics-change <%= changes.revenue >= 0 ? 'positive' : 'negative' %>">
+                    <%= changes.revenue >= 0 ? '+' : '' %><%= changes.revenue.toFixed(1) %>% from last month
+                </p>
             </div>
         </div>
 
@@ -37,7 +41,9 @@
             <div class="analytics-info">
                 <h3>Total Users</h3>
                 <p class="analytics-value"><%= totalUsers %></p>
-                <p class="analytics-change positive">+5.8% from last month</p>
+                <p class="analytics-change <%= changes.users >= 0 ? 'positive' : 'negative' %>">
+                    <%= changes.users >= 0 ? '+' : '' %><%= changes.users.toFixed(1) %>% from last month
+                </p>
             </div>
         </div>
 
@@ -50,7 +56,9 @@
             <div class="analytics-info">
                 <h3>Total Products</h3>
                 <p class="analytics-value"><%= totalProducts %></p>
-                <p class="analytics-change negative">-2.3% from last month</p>
+                <p class="analytics-change <%= changes.products >= 0 ? 'positive' : 'negative' %>">
+                    <%= changes.products >= 0 ? '+' : '' %><%= changes.products.toFixed(1) %>% from last month
+                </p>
             </div>
         </div>
     </div>

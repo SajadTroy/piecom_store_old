@@ -79,5 +79,27 @@
 </div>
 
 <script>
-    // ...existing menu toggle script...
+    document.addEventListener('DOMContentLoaded', function () {
+        const menuButton = document.querySelector('.menuIcon');
+        const closeButton = document.querySelector('.closeMenuIcon');
+        const mobileMenu = document.querySelector('.mobileMenu');
+
+        menuButton.addEventListener('click', function () {
+            mobileMenu.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        closeButton.addEventListener('click', function () {
+            mobileMenu.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        // Close menu when clicking outside
+        mobileMenu.addEventListener('click', function (e) {
+            if (e.target === mobileMenu) {
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    });
 </script>
