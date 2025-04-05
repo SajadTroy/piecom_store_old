@@ -12,7 +12,11 @@ router.get('/register', isAuthorized, async (req, res) => {
   if (user) {
     user = await User.findById(user.id).select('-password');
   }
-  res.render('user/register', { title: 'Register', user });
+  res.render('user/register', { meta: {
+    title: 'Register',
+    description: 'Create a new account',
+    image: '/images/default.jpg'
+  }, user });
 });
 
 router.post('/register', isAuthorized, async (req, res) => {
@@ -64,7 +68,7 @@ router.get('/login', isAuthorized, async (req, res) => {
     user = await User.findById(user.id).select('-password');
   }
 
-  res.render('user/login', { title: 'Login', user });
+  res.render('user/login', { meta: { title: 'Login', description: 'Login to your account', image: '/images/default.jpg' }, user });
 });
 
 router.post('/login', isAuthorized, async (req, res) => {
