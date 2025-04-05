@@ -30,6 +30,12 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: true,
     min: 0,
+    validate: {
+      validator: function (v) {
+        return v <= this.productPrice;
+      },
+      message: 'Selling price must be less than or equal to the product price.',
+    },
   },
   deliveryCharges: {
     type: Number,
@@ -40,6 +46,12 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: true,
     min: 0,
+    validate: {
+      validator: function (v) {
+        return v <= 100;
+      },
+      message: 'Discount percentage must be less than or equal to 100.',
+    },
   },
   category: {
     type: String,
@@ -54,7 +66,16 @@ const productSchema = new mongoose.Schema({
     required: true,
     min: 0,
   },
-}, { timestamps: true });
+}, { 
+  timestamps: true 
+});
+
+productSchema.pre('save', function (next) {
+  if (this.productPrice > 0 && this.sellingPrice > 0) {
+    this.discountPercentage = ((this.productPrice - this.sellingPrice) / this.productPrice) * 100;
+  }
+  next();
+});
 
 
 const Product = mongoose.model('Product', productSchema);
