@@ -1,0 +1,34 @@
+.mobileHeader {
+    width: 100%;
+    height: 50px;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0px 20px;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+}
+
+.mobileHeader .leftHeader, .mobileHeader .rightHeader, .mobileHeader .centerHeader {
+    display: flex;
+    align-items: center;
+}
+
+.mobileHeader .leftHeader button, .mobileHeader .rightHeader button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 15px;
+}
+
+.mobileHeader .centerHeader a .logo {
+    width: 120px;
+}
+
