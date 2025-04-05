@@ -220,5 +220,32 @@
 
         // Prevent direct input
         quantityInput.addEventListener('keydown', e => e.preventDefault());
+
+        // Add to cart handler
+        const addToCartBtn = document.querySelector('.add-to-cart');
+        addToCartBtn.addEventListener('click', async function() {
+            try {
+                const quantity = parseInt(quantityInput.value);
+                const response = await fetch('/cart/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        productId: '<%= product._id %>',
+                        quantity
+                    })
+                });
+
+                if (response.ok) {
+                    window.location.href = '/cart';
+                } else {
+                    const error = await response.text();
+                    alert(error || 'Error adding to cart');
+                }
+            } catch (error) {
+                alert('Error adding to cart');
+            }
+        });
     });
 </script>
