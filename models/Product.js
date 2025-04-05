@@ -41,6 +41,13 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: true,
     min: 0,
+    default: 60,
+    validate: {
+      validator: function (v) {
+        return v >= 0;
+      },
+      message: 'Delivery charges must be a positive number.',
+    },
   },
   discountPercentage: {
     type: Number,
