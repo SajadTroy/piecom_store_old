@@ -1,0 +1,118 @@
+<div class="admin-container">
+    <div class="page-header">
+        <h2>Edit Product</h2>
+        <a href="/admin/products" class="button button-text">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path d="M19 12H5m7-7l-7 7 7 7"/>
+            </svg>
+            <span>Back to Products</span>
+        </a>
+    </div>
+
+    <div class="form-card">
+        <form action="/admin/products/edit/<%= product._id %>" method="POST" class="admin-form" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="name">Product Name</label>
+                <input type="text" id="name" name="name" value="<%= product.name %>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="images">Product Images</label>
+                <div class="image-upload">
+                    <input type="file" id="images" name="images" accept="image/*" multiple>
+                    <div class="upload-placeholder">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7m4 2v4m0-4 4 4m-4-4-4 4"/>
+                        </svg>
+                        <span>Click to upload or drag images here</span>
+                    </div>
+                    <div class="image-preview">
+                        <% product.images.forEach((image, index) => { %>
+                            <div class="preview-item">
+                                <img src="<%= image %>" alt="Product image <%= index + 1 %>">
+                                <input type="hidden" name="existingImages[]" value="<%= image %>">
+                                <button type="button" class="remove-image" data-index="<%= index %>">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                        <path d="M18 6L6 18M6 6l12 12"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        <% }) %>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" rows="4" required><%= product.description %></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="productPrice">Original Price</label>
+                    <div class="price-input">
+                        <span>₹</span>
+                        <input type="number" id="productPrice" name="productPrice" min="0" step="0.01" value="<%= product.productPrice %>" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="sellingPrice">Selling Price</label>
+                    <div class="price-input">
+                        <span>₹</span>
+                        <input type="number" id="sellingPrice" name="sellingPrice" min="0" step="0.01" value="<%= product.sellingPrice %>" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="stockQuantity">Stock Quantity</label>
+                <input type="number" id="stockQuantity" name="stockQuantity" min="0" value="<%= product.stockQuantity %>" required>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="button button-primary">Update Product</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Image preview and removal functionality
+document.querySelector('#images').addEventListener('change', function(e) {
+    handleNewImages(this.files);
+});
+
+function handleNewImages(files) {
+    if (!files.length) return;
+    
+    const preview = document.querySelector('.image-preview');
+    [...files].forEach(file => {
+        const reader = new FileReader();
+        const imageWrap = document.createElement('div');
+        imageWrap.className = 'preview-item new-image';
+        
+        reader.onload = e => {
+            imageWrap.innerHTML = `
+                <img src="${e.target.result}" alt="New image">
+                <button type="button" class="remove-image">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            `;
+        };
+        
+        reader.readAsDataURL(file);
+        preview.appendChild(imageWrap);
+    });
+}
+
+document.querySelector('.image-preview').addEventListener('click', function(e) {
+    const removeButton = e.target.closest('.remove-image');
+    if (!removeButton) return;
+    
+    const previewItem = removeButton.closest('.preview-item');
+    previewItem.remove();
+});
+</script>

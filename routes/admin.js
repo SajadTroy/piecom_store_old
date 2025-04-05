@@ -177,6 +177,56 @@ router.post('/products/new', notAuthorized, upload.array('images'), async (req, 
     }
 });
 
+router.get('/products/edit/:id', notAuthorized, async (req, res) => {
+    try {
+        const user = await User.findById(req.session.user.id);
+        if (!user?.isAdmin) {
+            return res.redirect('/');
+        }
+
+        const product = await Product.findById(req.params.id);
+        if (!product) {
+            return res.status(404).send('Product not found');
+        }
+
+        res.render('admin/products/edit', {
+            layout: 'admin-layout',
+            user,
+            product
+        });
+    } catch (error) {
+        console.error('Error loading edit form:', error);
+        res.status(500).send('Error loading edit form');
+    }
+});
+
+router.post('/products/edit/:id', notAuthorized, upload.array('images'), async (req, res) => {
+    try {
+        const user = await User.findById(req.session.user.id);
+        if (!user?.isAdmin) {
+            return res.redirect('/');
+        }
+
+        let existingImages = req.body.existingImages || [];
+        if (!Array.isArray(existingImages)) {
+            existingImages = [existingImages];
+        }
+
+        const newImageUrls = req.files.map(file => `/uploads/products/${file.filename}`);
+        const allImages = [...existingImages, ...newImageUrls];
+
+        await Product.findByIdAndUpdate(req.params.id, {
+            ...req.body,
+            images: allImages
+        });
+
+        res.redirect('/admin/products');
+    } catch (error) {
+        console.error('Error updating product:', error);
+        res.status(500).send('Error updating product');
+    }
+});
+
 // Update stock
 router.patch('/products/stock/:id', notAuthorized, async (req, res) => {
     try {
