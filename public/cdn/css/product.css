@@ -41,11 +41,31 @@
     color: #333;
     margin: 0 0 8px;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Keep truncation for product cards */
+.product-card .product-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    margin: 0 0 8px;
+    display: -webkit-box;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
     height: 2.8em;
+}
+
+/* Full title for product page */
+.info-card .product-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 15px;
+    line-height: 1.3;
 }
 
 .product-prices {
