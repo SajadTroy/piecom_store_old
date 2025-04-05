@@ -13,7 +13,6 @@ router.get('/', async (req, res) => {
         if (user) {
             user =  await User.findById(user.id).select('-password');
         }
-        console.log('User:', user);
         
         res.render('user/index', { title: 'Home', user });
     } catch (error) {

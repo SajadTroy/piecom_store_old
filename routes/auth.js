@@ -7,12 +7,16 @@ const { send } = require('../email');
 
 const { notAuthorized, isAuthorized } = require('../middleware/auth');
 
-router.get('/register', isAuthorized, (req, res) => {
-  res.render('user/register', { title: 'Register' });
+router.get('/register', isAuthorized, async (req, res) => {
+  let user = req.session.user || null;
+  if (user) {
+    user = await User.findById(user.id).select('-password');
+  }
+  res.render('user/register', { title: 'Register', user });
 });
 
 router.post('/register', isAuthorized, async (req, res) => {
-  const { email, phone} = req.body;
+  const { email, phone } = req.body;
 
   try {
     const password = crypto.randomBytes(8).toString('hex');
@@ -42,8 +46,13 @@ router.post('/register', isAuthorized, async (req, res) => {
   }
 });
 
-router.get('/login', isAuthorized, (req, res) => {
-  res.render('user/login', { title: 'Login' });
+router.get('/login', isAuthorized, async (req, res) => {
+  let user = req.session.user || null;
+  if (user) {
+    user = await User.findById(user.id).select('-password');
+  }
+
+  res.render('user/login', { title: 'Login', user });
 });
 
 router.post('/login', isAuthorized, async (req, res) => {
@@ -69,8 +78,8 @@ router.post('/login', isAuthorized, async (req, res) => {
 });
 
 router.get('/logout', (req, res) => {
-  req.session = null; 
-  res.redirect('/'); 
+  req.session = null;
+  res.redirect('/');
 });
 
 module.exports = router;
