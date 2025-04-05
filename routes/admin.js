@@ -238,4 +238,40 @@ router.patch('/products/stock/:id', notAuthorized, async (req, res) => {
     }
 });
 
+router.get('/orders', notAuthorized, async (req, res) => {
+    try {
+        const user = await User.findById(req.session.user.id);
+        if (!user?.isAdmin) {
+            return res.redirect('/');
+        }
+
+        const orders = await Order.find({ 
+            paymentStatus: 'Completed'  // Only show paid orders
+        })
+        .populate('userId', 'email')
+        .sort({ createdAt: -1 });
+
+        res.render('admin/orders', {
+            layout: 'admin-layout',
+            user,
+            orders
+        });
+    } catch (error) {
+        console.error('Error loading orders:', error);
+        res.status(500).send('Error loading orders');
+    }
+});
+
+router.patch('/orders/:id/status', notAuthorized, async (req, res) => {
+    try {
+        const { status } = req.body;
+        await Order.findByIdAndUpdate(req.params.id, { 
+            deliveryStatus: status 
+        });
+        res.status(200).send('Status updated');
+    } catch (error) {
+        res.status(500).send('Error updating status');
+    }
+});
+
 module.exports = router;
