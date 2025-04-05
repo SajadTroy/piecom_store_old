@@ -5,6 +5,7 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
+    default: 'No name provided.',
   },
   images: {
     type: [String],
@@ -20,11 +21,18 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
+    default: 'No description provided.',
   },
   productPrice: {
     type: Number,
     required: true,
     min: 0,
+    validate: {
+      validator: function (v) {
+        return v >= 0;
+      },
+      message: 'Product price must be a positive number.',
+    },
   },
   sellingPrice: {
     type: Number,
@@ -72,6 +80,12 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: true,
     min: 0,
+    validate: {
+      validator: function (v) {
+        return v >= 0;
+      },
+      message: 'Stock quantity must be a positive number.',
+    },
   },
 }, { 
   timestamps: true 
