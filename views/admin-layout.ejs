@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piecom Admin - <%= typeof title !== 'undefined' ? title : 'Dashboard' %></title>
+    
+    <!-- Style -->
+    <link rel="stylesheet" href="/cdn/css/style.css">
+    <link rel="stylesheet" href="/cdn/css/header.css">
+    <link rel="stylesheet" href="/cdn/css/admin.css">
+</head>
+<body>
+    <%- include('partials/admin-header') %>
+    <main class="mainContent">
+        <%- body %>
+    </main>
+</body>
+</html>

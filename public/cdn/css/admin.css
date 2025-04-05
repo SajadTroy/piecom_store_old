@@ -1,0 +1,130 @@
+.admin-container {
+    padding: 90px 20px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.analytics-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.analytics-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+.analytics-icon.orders { background: #2196f3; }
+.analytics-icon.revenue { background: #00aa69; }
+.analytics-icon.users { background: #ff9800; }
+.analytics-icon.products { background: #333; }
+
+.analytics-info h3 {
+    font-size: 14px;
+    color: #666;
+    margin: 0 0 5px;
+}
+
+.analytics-value {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 5px;
+}
+
+.analytics-change {
+    font-size: 12px;
+    margin: 0;
+}
+
+.analytics-change.positive { color: #00aa69; }
+.analytics-change.negative { color: #dc3545; }
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.chart-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.chart-card h3 {
+    font-size: 16px;
+    color: #333;
+    margin: 0 0 20px;
+}
+
+.chart-container {
+    height: 300px;
+}
+
+.recent-section {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.recent-section h3 {
+    font-size: 16px;
+    color: #333;
+    margin: 0 0 20px;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.admin-table th {
+    font-weight: 600;
+    color: #666;
+}
+
+.status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.status.delivered { background: #e8f5e9; color: #00aa69; }
+.status.pending { background: #fff3e0; color: #ff9800; }
+.status.processing { background: #e3f2fd; color: #2196f3; }
+
+@media (max-width: 768px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+}
