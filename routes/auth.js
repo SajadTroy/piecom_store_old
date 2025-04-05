@@ -21,11 +21,23 @@ router.post('/register', isAuthorized, async (req, res) => {
   try {
     const password = crypto.randomBytes(8).toString('hex');
 
-    const newUser = new User({
+    let user = await User.findOne({ email, isVerified: true });
+    if (user) {
+      return res.status(400).send('Email already registered');
+    }
+
+    let notVerifiedUser = await User.findOne({ email, isVerified: false });
+
+    let newUser = new User({
       email,
       phone,
       password: await bcrypt.hash(password, 10)
     });
+
+    if (notVerifiedUser) {
+      newUser = notVerifiedUser;
+      newUser.password = await bcrypt.hash(password, 10);
+    }
 
     await newUser.save();
 
@@ -64,9 +76,18 @@ router.post('/login', isAuthorized, async (req, res) => {
       return res.status(400).send('Invalid email or password');
     }
 
+    if (user.isBlocked) {
+      return res.status(403).send('Your account is blocked. Please contact support.');
+    }
+
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res.status(400).send('Invalid email or password');
+    }
+
+    if (!user.isVerified) {
+      user.isVerified = true;
+      await user.save();
     }
 
     req.session.user = { id: user._id, email: user.email };
