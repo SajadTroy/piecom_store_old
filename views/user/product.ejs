@@ -6,52 +6,73 @@
         <div class="product-gallery">
             <div class="gallery-main">
                 <div class="carousel-inner">
-                    <% product.images.forEach(image => { %>
+                    <% product.images.forEach(image=> { %>
                         <div class="carousel-slide">
                             <img src="<%= image %>" alt="<%= product.name %>">
                         </div>
-                    <% }) %>
+                        <% }) %>
                 </div>
                 <div class="carousel-dots"></div>
             </div>
             <div class="gallery-thumbs">
-                <% product.images.forEach((image, index) => { %>
+                <% product.images.forEach((image, index)=> { %>
                     <button class="thumb <%= index === 0 ? 'active' : '' %>" data-index="<%= index %>">
                         <img src="<%= image %>" alt="Thumbnail">
                     </button>
-                <% }) %>
+                    <% }) %>
             </div>
         </div>
 
         <!-- Product Info Section -->
         <div class="product-info">
             <div class="info-card">
-                <h1 class="product-title"><%= product.name %></h1>
+                <h1 class="product-title">
+                    <%= product.name %>
+                </h1>
                 <div class="product-prices large">
                     <span class="selling-price">₹<%= product.sellingPrice %></span>
                     <span class="original-price">₹<%= product.productPrice %></span>
-                    <span class="discount"><%= product.discountPercentage.toFixed(0) %>% off</span>
+                    <span class="discount">
+                        <%= product.discountPercentage.toFixed(0) %>% off
+                    </span>
                 </div>
 
                 <div class="stock-status">
                     <span class="status <%= product.stockQuantity > 0 ? 'in-stock' : 'out-of-stock' %>">
-                        <%= product.stockQuantity > 0 ? 'In Stock' : 'Out of Stock' %>
+                        <%= product.stockQuantity> 0 ? 'In Stock' : 'Out of Stock' %>
                     </span>
                 </div>
 
+                <div class="product-quantity">
+                    <label class="quantity-label">Quantity</label>
+                    <div class="quantity-input">
+                        <button class="quantity-btn" id="decreaseQty" disabled>-</button>
+                        <input type="number" class="quantity-number" value="1" min="1"
+                            max="<%= product.stockQuantity %>" readonly>
+                        <button class="quantity-btn" id="increaseQty" <%=product.stockQuantity <=1 ? 'disabled' : ''
+                            %>>+</button>
+                    </div>
+                </div>
+
                 <div class="product-actions">
-                    <button class="add-to-cart" <%= product.stockQuantity === 0 ? 'disabled' : '' %>>
-                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-8 2a2 2 0 1 0 4 0 2 2 0 0 0-4 0z"/>
+                    <button class="add-to-cart" <%=product.stockQuantity===0 ? 'disabled' : '' %>>
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"
+                            viewBox="0 0 24 24">
+                            <path
+                                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-8 2a2 2 0 1 0 4 0 2 2 0 0 0-4 0z" />
                         </svg>
-                        <span><%= product.stockQuantity === 0 ? 'Out of Stock' : 'Add to Cart' %></span>
+                        <span>
+                            <%= product.stockQuantity===0 ? 'Out of Stock' : 'Add to Cart' %>
+                        </span>
                     </button>
                 </div>
             </div>
 
             <div class="info-card">
                 <h2>Description</h2>
-                <p class="product-description"><%= product.description %></p>
+                <p class="product-description">
+                    <%= product.description %>
+                </p>
             </div>
         </div>
     </div>
@@ -61,30 +82,45 @@
         <div class="section-header">
             <h2>Similar Products</h2>
         </div>
-        <div class="products-grid">
-            <% similarProducts.forEach(product => { %>
-                <a href="/product/<%= product._id %>" class="product-link">
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="<%= product.images[0] %>" alt="<%= product.name %>">
-                        </div>
-                        <div class="product-details">
-                            <h3 class="product-title"><%= product.name %></h3>
-                            <div class="product-prices">
-                                <span class="selling-price">₹<%= product.sellingPrice %></span>
-                                <span class="original-price">₹<%= product.productPrice %></span>
-                                <span class="discount"><%= product.discountPercentage.toFixed(0) %>% off</span>
+        <% if (similarProducts && similarProducts.length> 0) { %>
+            <div class="products-grid">
+                <% similarProducts.forEach(product=> { %>
+                    <a href="/product/<%= product._id %>" class="product-link">
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="<%= product.images[0] %>" alt="<%= product.name %>">
+                            </div>
+                            <div class="product-details">
+                                <h3 class="product-title">
+                                    <%= product.name %>
+                                </h3>
+                                <div class="product-prices">
+                                    <span class="selling-price">₹<%= product.sellingPrice %></span>
+                                    <span class="original-price">₹<%= product.productPrice %></span>
+                                    <span class="discount">
+                                        <%= product.discountPercentage.toFixed(0) %>% off
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-            <% }) %>
-        </div>
+                    </a>
+                    <% }) %>
+            </div>
+            <% } else { %>
+                <div class="no-products">
+                    <svg width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
+                        stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d='M17 3H7a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1M6 6H3m3 4H3m3 4H3m3 4H3M21 6h-3m3 4h-3m3 4h-3m3 4h-3' />
+                    </svg>
+                    <p>No similar products available</p>
+                </div>
+                <% } %>
     </section>
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const gallery = document.querySelector('.product-gallery');
         const slides = gallery.querySelectorAll('.carousel-slide');
         const thumbs = gallery.querySelectorAll('.thumb');
@@ -114,11 +150,46 @@
         function updateGallery() {
             const offset = -currentSlide * 100;
             gallery.querySelector('.carousel-inner').style.transform = `translateX(${offset}%)`;
-            
+
             // Update thumbnails
             thumbs.forEach((thumb, i) => {
                 thumb.classList.toggle('active', i === currentSlide);
             });
         }
+
+        // Enhanced quantity controls
+        const quantityInput = document.querySelector('.quantity-number');
+        const decreaseBtn = document.querySelector('#decreaseQty');
+        const increaseBtn = document.querySelector('#increaseQty');
+        const maxStock = <%= product.stockQuantity %>;
+
+        function updateQuantity(increment) {
+            const currentQty = parseInt(quantityInput.value);
+            const newQty = increment ? currentQty + 1 : currentQty - 1;
+
+            if (newQty >= 1 && newQty <= maxStock) {
+                quantityInput.value = newQty;
+                updateQuantityButtons();
+            }
+        }
+
+        function updateQuantityButtons() {
+            const currentQty = parseInt(quantityInput.value);
+            decreaseBtn.disabled = currentQty <= 1;
+            increaseBtn.disabled = currentQty >= maxStock;
+        }
+
+        decreaseBtn.addEventListener('click', () => updateQuantity(false));
+        increaseBtn.addEventListener('click', () => updateQuantity(true));
+
+        // Prevent manual input
+        quantityInput.addEventListener('keydown', (e) => e.preventDefault());
+        quantityInput.addEventListener('input', () => {
+            let value = parseInt(quantityInput.value);
+            if (isNaN(value)) value = 1;
+            value = Math.max(1, Math.min(value, maxStock));
+            quantityInput.value = value;
+            updateQuantityButtons();
+        });
     });
 </script>
