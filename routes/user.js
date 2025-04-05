@@ -58,4 +58,73 @@ router.post('/cart/add', notAuthorized, async (req, res) => {
     }
 });
 
+// Get cart page
+router.get('/cart', notAuthorized, async (req, res) => {
+    try {
+        let user = await User.findById(req.session.user.id).select('-password');
+        let cart = await Cart.findOne({ userId: user.id }).populate('products.productId');
+
+        res.render('user/cart', {
+            meta: {
+                title: 'Shopping Cart',
+                description: 'Your shopping cart',
+                image: '/images/default.jpg'
+            },
+            user,
+            cart
+        });
+    } catch (error) {
+        console.error('Error loading cart:', error);
+        res.status(500).send('Error loading cart');
+    }
+});
+
+// Update cart item quantity
+router.patch('/cart/update', notAuthorized, async (req, res) => {
+    try {
+        const { productId, quantity } = req.body;
+        const userId = req.session.user.id;
+
+        const cart = await Cart.findOne({ userId });
+        if (!cart) return res.status(404).send('Cart not found');
+
+        const product = await Product.findById(productId);
+        if (!product) return res.status(404).send('Product not found');
+
+        if (product.stockQuantity < quantity) {
+            return res.status(400).send('Not enough stock');
+        }
+
+        const cartProduct = cart.products.find(p => p.productId.toString() === productId);
+        if (!cartProduct) return res.status(404).send('Product not in cart');
+
+        cartProduct.quantity = quantity;
+        await cart.save();
+        
+        res.status(200).send('Cart updated');
+    } catch (error) {
+        console.error('Error updating cart:', error);
+        res.status(500).send('Error updating cart');
+    }
+});
+
+// Remove item from cart
+router.delete('/cart/remove', notAuthorized, async (req, res) => {
+    try {
+        const { productId } = req.body;
+        const userId = req.session.user.id;
+
+        const cart = await Cart.findOne({ userId });
+        if (!cart) return res.status(404).send('Cart not found');
+
+        cart.products = cart.products.filter(p => p.productId.toString() !== productId);
+        await cart.save();
+
+        res.status(200).send('Item removed');
+    } catch (error) {
+        console.error('Error removing item:', error);
+        res.status(500).send('Error removing item');
+    }
+});
+
 module.exports = router;
