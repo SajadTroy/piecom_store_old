@@ -1,6 +1,31 @@
 <link rel="stylesheet" href="/cdn/css/product.css">
 
 <div class="products-container">
+    <div class="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-slide">
+                <img src="https://picsum.photos/1200/400" alt="Promo 1">
+            </div>
+            <div class="carousel-slide">
+                <img src="https://picsum.photos/1200/400" alt="Promo 2">
+            </div>
+            <div class="carousel-slide">
+                <img src="https://picsum.photos/1200/400" alt="Promo 3">
+            </div>
+        </div>
+        <button class="carousel-button prev">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path d="M15 18l-6-6 6-6" />
+            </svg>
+        </button>
+        <button class="carousel-button next">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path d="M9 18l6-6-6-6" />
+            </svg>
+        </button>
+        <div class="carousel-dots"></div>
+    </div>
+
     <section class="product-section">
         <div class="section-header">
             <h2>Recommended Products</h2>
@@ -79,3 +104,53 @@
         </div>
     </section>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const carousel = document.querySelector('.carousel');
+        const slides = carousel.querySelectorAll('.carousel-slide');
+        const dotsContainer = carousel.querySelector('.carousel-dots');
+        let currentSlide = 0;
+
+        // Create dots
+        slides.forEach((_, i) => {
+            const dot = document.createElement('button');
+            dot.classList.add('carousel-dot');
+            if (i === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToSlide(i));
+            dotsContainer.appendChild(dot);
+        });
+
+        // Navigation buttons
+        carousel.querySelector('.prev').addEventListener('click', () => {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            updateCarousel();
+        });
+
+        carousel.querySelector('.next').addEventListener('click', () => {
+            currentSlide = (currentSlide + 1) % slides.length;
+            updateCarousel();
+        });
+
+        function goToSlide(n) {
+            currentSlide = n;
+            updateCarousel();
+        }
+
+        function updateCarousel() {
+            const offset = -currentSlide * 100;
+            carousel.querySelector('.carousel-inner').style.transform = `translateX(${offset}%)`;
+            
+            // Update dots
+            dotsContainer.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlide);
+            });
+        }
+
+        // Auto advance
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % slides.length;
+            updateCarousel();
+        }, 5000);
+    });
+</script>
