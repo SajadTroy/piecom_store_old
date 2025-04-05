@@ -135,62 +135,69 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const gallery = document.querySelector('.product-gallery');
-        const slides = gallery.querySelectorAll('.carousel-slide');
-        const thumbs = gallery.querySelectorAll('.thumb');
-        const dotsContainer = gallery.querySelector('.carousel-dots');
-        let currentSlide = 0;
+        // Gallery controls - only initialize if multiple images exist
+        if (<%= product.images.length %> > 1) {
+            const gallery = document.querySelector('.product-gallery');
+            const slides = gallery.querySelectorAll('.carousel-slide');
+            const thumbs = gallery.querySelectorAll('.thumb');
+            const dotsContainer = gallery.querySelector('.carousel-dots');
+            let currentSlide = 0;
 
-        // Create dots for gallery
-        slides.forEach((_, i) => {
-            const dot = document.createElement('button');
-            dot.classList.add('carousel-dot');
-            if (i === 0) dot.classList.add('active');
-            dot.addEventListener('click', () => goToSlide(i));
-            dotsContainer.appendChild(dot);
-        });
-
-        // Thumbnail clicks
-        thumbs.forEach((thumb, index) => {
-            thumb.addEventListener('click', () => goToSlide(index));
-        });
-
-        // Navigation buttons
-        gallery.querySelector('.prev').addEventListener('click', () => {
-            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-            updateGallery();
-        });
-
-        gallery.querySelector('.next').addEventListener('click', () => {
-            currentSlide = (currentSlide + 1) % slides.length;
-            updateGallery();
-        });
-
-        function goToSlide(n) {
-            currentSlide = n;
-            updateGallery();
-        }
-
-        function updateGallery() {
-            const offset = -currentSlide * 100;
-            gallery.querySelector('.carousel-inner').style.transform = `translateX(${offset}%)`;
-
-            // Update thumbnails
-            thumbs.forEach((thumb, i) => {
-                thumb.classList.toggle('active', i === currentSlide);
+            // Create dots for gallery
+            slides.forEach((_, i) => {
+                const dot = document.createElement('button');
+                dot.classList.add('carousel-dot');
+                if (i === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => goToSlide(i));
+                dotsContainer.appendChild(dot);
             });
 
-            // Update dots
-            dotsContainer.querySelectorAll('.carousel-dot').forEach((dot, i) => {
-                dot.classList.toggle('active', i === currentSlide);
+            // Thumbnail clicks
+            thumbs.forEach((thumb, index) => {
+                thumb.addEventListener('click', () => goToSlide(index));
             });
+
+            // Navigation buttons
+            gallery.querySelector('.prev').addEventListener('click', () => {
+                currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+                updateGallery();
+            });
+
+            gallery.querySelector('.next').addEventListener('click', () => {
+                currentSlide = (currentSlide + 1) % slides.length;
+                updateGallery();
+            });
+
+            function goToSlide(n) {
+                currentSlide = n;
+                updateGallery();
+            }
+
+            function updateGallery() {
+                const offset = -currentSlide * 100;
+                gallery.querySelector('.carousel-inner').style.transform = `translateX(${offset}%)`;
+
+                // Update thumbnails and dots
+                thumbs.forEach((thumb, i) => {
+                    thumb.classList.toggle('active', i === currentSlide);
+                });
+                dotsContainer.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+                    dot.classList.toggle('active', i === currentSlide);
+                });
+            }
         }
 
-        // Enhanced quantity controls
+        // Quantity controls - separate from gallery logic
         const quantityInput = document.querySelector('.quantity-number');
         const decreaseBtn = document.querySelector('#decreaseQty');
         const increaseBtn = document.querySelector('#increaseQty');
         const maxStock = <%= product.stockQuantity %>;
+
+        function updateQuantityState() {
+            const currentValue = parseInt(quantityInput.value);
+            decreaseBtn.disabled = currentValue <= 1;
+            increaseBtn.disabled = currentValue >= maxStock;
+        }
 
         decreaseBtn.addEventListener('click', function() {
             let currentValue = parseInt(quantityInput.value);
@@ -207,12 +214,6 @@
                 updateQuantityState();
             }
         });
-
-        function updateQuantityState() {
-            const currentValue = parseInt(quantityInput.value);
-            decreaseBtn.disabled = currentValue <= 1;
-            increaseBtn.disabled = currentValue >= maxStock;
-        }
 
         // Initialize quantity state
         updateQuantityState();
