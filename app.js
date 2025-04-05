@@ -58,6 +58,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', require('./routes/index'));
 app.use('/', require('./routes/user'));
 app.use('/auth', require('./routes/auth'));
+app.use('/admin', require('./routes/admin'));
 
 app.use((req, res) => {
     res.status(404).render('notfound', {
