@@ -82,14 +82,32 @@
         <div class="chart-card">
             <h3>Monthly Revenue</h3>
             <div class="chart-container">
-                <canvas id="revenueChart"></canvas>
+                <% if (revenueData && revenueData.length > 0) { %>
+                    <canvas id="revenueChart"></canvas>
+                <% } else { %>
+                    <div class="no-data"></div>
+                        <svg width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18m-4.5-4.5h9M12 12V6"/>
+                        </svg>
+                        <p>No revenue data available</p>
+                    </div>
+                <% } %>
             </div>
         </div>
-
+        
         <div class="chart-card">
             <h3>Orders Status</h3>
             <div class="chart-container">
-                <canvas id="ordersChart"></canvas>
+                <% if (orderStatusData && orderStatusData.some(value => value > 0)) { %>
+                    <canvas id="ordersChart"></canvas>
+                <% } else { %>
+                    <div class="no-data">
+                        <svg width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="m12 21 8.131-4.208c.316-.164.474-.245.589-.366a1 1 0 0 0 .226-.373c.054-.159.054-.336.054-.692V7.533"/>
+                        </svg>
+                        <p>No orders data available</p>
+                    </div>
+                <% } %>
             </div>
         </div>
     </div>
@@ -112,7 +130,7 @@
                         <tr>
                             <td>#<%= order._id.slice(-6) %>
                             </td>
-                            <td>
+                            <td></td>
                                 <%= order.customer %>
                             </td>
                             <td><span class="status <%= order.status.toLowerCase() %>">

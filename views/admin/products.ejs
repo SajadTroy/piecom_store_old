@@ -1,70 +1,86 @@
 <div class="admin-container">
     <div class="page-header">
-        <h2>Products Management</h2>
-        <a href="/admin/products/new" class="button button-primary">
+        <h2>Products</h2>
+        <button class="button button-primary new-product-btn">
             <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                 <path d="M12 5v14m-7-7h14"/>
             </svg>
-            <span>New Product</span>
-        </a>
+            <span>Add Product</span>
+        </button>
     </div>
 
-    <div class="products-table-container">
-        <table class="admin-table">
-            <thead>
-                <tr>
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Stock</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% products.forEach(product => { %>
-                <tr>
-                    <td>
-                        <img src="<%= product.images[0] %>" alt="<%= product.name %>" class="product-thumbnail">
-                    </td>
-                    <td><%= product.name %></td>
-                    <td>
-                        <div class="price-info">
-                            <span class="current-price">₹<%= product.sellingPrice %></span>
-                            <span class="original-price">₹<%= product.productPrice %></span>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="stock-editor">
-                            <input type="number" value="<%= product.stockQuantity %>" 
-                                   data-id="<%= product._id %>" class="stock-input">
-                            <button class="update-stock" data-id="<%= product._id %>">Update</button>
-                        </div>
-                    </td>
-                    <td>
-                        <span class="status <%= product.stockQuantity > 0 ? 'in-stock' : 'out-of-stock' %>">
-                            <%= product.stockQuantity > 0 ? 'In Stock' : 'Out of Stock' %>
-                        </span>
-                    </td>
-                    <td>
-                        <div class="action-buttons">
-                            <a href="/admin/products/edit/<%= product._id %>" class="edit-btn">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                                </svg>
-                            </a>
-                            <button class="delete-btn" data-id="<%= product._id %>">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                                    <path d="M3 6h18m-2 0v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6m3 0V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                <% }) %>
-            </tbody>
-        </table>
+    <div class="table-card">
+        <% if (products && products.length > 0) { %>
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% products.forEach(product => { %>
+                        <tr>
+                            <td>
+                                <img src="<%= product.images[0] %>" alt="<%= product.name %>" class="product-thumbnail">
+                            </td>
+                            <td><%= product.name %></td>
+                            <td>
+                                <div class="price-info">
+                                    <span class="current-price">₹<%= product.sellingPrice %></span>
+                                    <span class="original-price">₹<%= product.productPrice %></span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="stock-editor">
+                                    <input type="number" value="<%= product.stockQuantity %>" 
+                                           data-id="<%= product._id %>" class="stock-input">
+                                    <button class="update-stock" data-id="<%= product._id %>">
+                                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                            <path d="m5 13 4 4L19 7"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="status <%= product.stockQuantity > 0 ? 'active' : 'inactive' %>">
+                                    <%= product.stockQuantity > 0 ? 'In Stock' : 'Out of Stock' %>
+                                </span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="icon-button edit" onclick="location.href='/admin/products/edit/<%= product._id %>'">
+                                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                        </svg>
+                                    </button>
+                                    <button class="icon-button delete" data-id="<%= product._id %>">
+                                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                            <path d="M3 6h18m-2 0v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6m3 0V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        <% } else { %>
+            <div class="no-data">
+                <svg width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path d="M17 3H7a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1"/>
+                </svg>
+                <p>No products available</p>
+                <button class="button button-primary new-product-btn">Add First Product</button>
+            </div>
+        <% } %>
     </div>
 </div>
 
