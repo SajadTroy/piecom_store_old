@@ -1,21 +1,75 @@
 <link rel="stylesheet" href="/cdn/css/product.css">
 
 <div class="products-container">
-    <div class="products-grid">
-        <% for(let i = 0; i < 10; i++) { %>
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://picsum.photos/400" alt="Product Image">
-                </div>
-                <div class="product-details">
-                    <h3 class="product-title">Sample Product with a Long Title That May Need Two Lines</h3>
-                    <div class="product-prices">
-                        <span class="selling-price">₹599</span>
-                        <span class="original-price">₹999</span>
-                        <span class="discount">40% off</span>
+    <section class="product-section">
+        <div class="section-header">
+            <h2>Recommended Products</h2>
+            <a href="/products/recommended" class="view-all">View All</a>
+        </div>
+        <div class="products-grid">
+            <% for(let i = 0; i < 5; i++) { %>
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://picsum.photos/400" alt="Product Image">
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-title">Sample Product with a Long Title That May Need Two Lines</h3>
+                        <div class="product-prices">
+                            <span class="selling-price">₹599</span>
+                            <span class="original-price">₹999</span>
+                            <span class="discount">40% off</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-        <% } %>
-    </div>
+            <% } %>
+        </div>
+    </section>
+
+    <section class="product-section">
+        <div class="section-header">
+            <h2>Trending Now</h2>
+            <a href="/products/trending" class="view-all">View All</a>
+        </div>
+        <div class="products-grid">
+            <% for(let i = 0; i < 5; i++) { %>
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://picsum.photos/400" alt="Product Image">
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-title">Sample Product with a Long Title That May Need Two Lines</h3>
+                        <div class="product-prices">
+                            <span class="selling-price">₹599</span>
+                            <span class="original-price">₹999</span>
+                            <span class="discount">40% off</span>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </section>
+
+    <section class="product-section">
+        <div class="section-header">
+            <h2>Latest Products</h2>
+            <a href="/products/latest" class="view-all">View All</a>
+        </div>
+        <div class="products-grid">
+            <% for(let i = 0; i < 5; i++) { %>
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://picsum.photos/400" alt="Product Image">
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-title">Sample Product with a Long Title That May Need Two Lines</h3>
+                        <div class="product-prices">
+                            <span class="selling-price">₹599</span>
+                            <span class="original-price">₹999</span>
+                            <span class="discount">40% off</span>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </section>
 </div>
