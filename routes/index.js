@@ -99,4 +99,37 @@ router.get('/products/:type', async (req, res) => {
     }
 });
 
+router.get('/product/:id', async (req, res) => {
+    try {
+        let user = req.session.user || null;
+        if (user) {
+            user = await User.findById(user.id).select('-password');
+        }
+
+        const product = await Product.findById(req.params.id);
+        if (!product) {
+            return res.status(404).render('notfound', { 
+                title: '404 - Product Not Found',
+                user 
+            });
+        }
+
+        // Get similar products from same category
+        const similarProducts = await Product.find({
+            _id: { $ne: product._id },
+            category: product.category
+        }).limit(10);
+
+        res.render('user/product', {
+            title: product.name,
+            user,
+            product,
+            similarProducts
+        });
+    } catch (error) {
+        console.error('Error fetching product:', error);
+        res.status(500).send('Error fetching product');
+    }
+});
+
 module.exports = router;
