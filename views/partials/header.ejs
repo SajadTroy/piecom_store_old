@@ -66,33 +66,77 @@
                             Cart
                         </div>
                     </a>
-                    <a href="/orders">
-                        <div class="menuIcon">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"
-                                viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d='m12 21 8.131-4.208c.316-.164.474-.245.589-.366a1 1 0 0 0 .226-.373c.054-.159.054-.336.054-.692V7.533M12 21l-8.131-4.208c-.316-.164-.474-.245-.589-.366a1 1 0 0 1-.226-.373C3 15.894 3 15.716 3 15.359V7.533M12 21v-9.063m9-4.404-9 4.404m9-4.404-4.5-2.33M3 7.534l8.269-4.28c.268-.138.401-.208.542-.235a1 1 0 0 1 .378 0c.14.027.274.097.541.235l3.77 1.95M3 7.534l4.5 2.202m4.5 2.202L7.5 9.735m0 0 9-4.531m-9 4.531v2.202' />
-                            </svg>
-                        </div>
-                        <div class="menuText">
-                            Orders
-                        </div>
-                    </a>
-                    <a href="/settings">
-                        <div class="menuIcon">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"
-                                viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path d='M14.5 12a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0' />
-                                <path
-                                    d='M20.5 15.8V8.2a1.91 1.91 0 0 0-.944-1.645l-6.612-3.8a1.88 1.88 0 0 0-1.888 0l-6.612 3.8A1.9 1.9 0 0 0 3.5 8.2v7.602a1.91 1.91 0 0 0 .944 1.644l6.612 3.8a1.88 1.88 0 0 0 1.888 0l6.612-3.8A1.9 1.9 0 0 0 20.5 15.8' />
-                            </svg>
-                        </div>
-                        <div class="menuText">
-                            Settings
-                        </div>
-                    </a>
+                    <% if (user) { %>
+                        <a href="/orders">
+                            <div class="menuIcon">
+                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d='m12 21 8.131-4.208c.316-.164.474-.245.589-.366a1 1 0 0 0 .226-.373c.054-.159.054-.336.054-.692V7.533M12 21l-8.131-4.208c-.316-.164-.474-.245-.589-.366a1 1 0 0 1-.226-.373C3 15.894 3 15.716 3 15.359V7.533M12 21v-9.063m9-4.404-9 4.404m9-4.404-4.5-2.33M3 7.534l8.269-4.28c.268-.138.401-.208.542-.235a1 1 0 0 1 .378 0c.14.027.274.097.541.235l3.77 1.95M3 7.534l4.5 2.202m4.5 2.202L7.5 9.735m0 0 9-4.531m-9 4.531v2.202' />
+                                </svg>
+                            </div>
+                            <div class="menuText">
+                                Orders
+                            </div>
+                        </a>
+                        <a href="/settings">
+                            <div class="menuIcon">
+                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d='M14.5 12a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0' />
+                                    <path
+                                        d='M20.5 15.8V8.2a1.91 1.91 0 0 0-.944-1.645l-6.612-3.8a1.88 1.88 0 0 0-1.888 0l-6.612 3.8A1.9 1.9 0 0 0 3.5 8.2v7.602a1.91 1.91 0 0 0 .944 1.644l6.612 3.8a1.88 1.88 0 0 0 1.888 0l6.612-3.8A1.9 1.9 0 0 0 20.5 15.8' />
+                                </svg>
+                            </div>
+                            <div class="menuText">
+                                Settings
+                            </div>
+                        </a>
+                        <a href="/auth/logout" class="logout">
+                            <div class="menuIcon">
+                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d='M13.496 21H6.5c-1.105 0-2-1.151-2-2.571V5.57c0-1.419.895-2.57 2-2.57h7M16 15.5l3.5-3.5L16 8.5m-6.5 3.496h10' />
+                                </svg>
+                            </div>
+                            <div class="menuText">
+                                Logout
+                            </div>
+                        </a>
+                        <% } else { %>
+                            <a href="/auth/register">
+                                <div class="menuIcon">
+                                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                        viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d='M13.496 21H6.5c-1.105 0-2-1.151-2-2.571V5.57c0-1.419.895-2.57 2-2.57h7' />
+                                        <path d='M13 15.5 9.5 12 13 8.5m6.5 3.496h-10' />
+                                    </svg>
+                                </div>
+                                <div class="menuText">
+                                    Register
+                                </div>
+                            </a>
+                            <!-- <a href="/auth/login">
+                                <div class="menuIcon">
+                                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                        viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d='M13.496 21H6.5c-1.105 0-2-1.151-2-2.571V5.57c0-1.419.895-2.57 2-2.57h7' />
+                                        <path d='M13 15.5 9.5 12 13 8.5m6.5 3.496h-10' />
+                                    </svg>
+                                </div>
+                                <div class="menuText">
+                                    Login
+                                </div>
+                            </a> -->
+                            <% } %>
                 </li>
             </ul>
 
