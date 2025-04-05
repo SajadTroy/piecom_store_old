@@ -58,21 +58,12 @@
                                 </td>
                                 <td>
                                     <div class="action-buttons">
-                                        <button class="icon-button edit"
-                                            onclick="location.href='/admin/products/edit/<%= product._id %>'">
-                                            <svg width="18" height="18" fill="none" stroke="currentColor"
-                                                stroke-width="1.5" viewBox="0 0 24 24">
-                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                        <a href="/admin/products/edit/<%= product._id %>" class="icon-button edit">
+                                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                                             </svg>
-                                        </button>
-                                        <button class="icon-button delete" data-id="<%= product._id %>">
-                                            <svg width="18" height="18" fill="none" stroke="currentColor"
-                                                stroke-width="1.5" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M3 6h18m-2 0v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6m3 0V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                                            </svg>
-                                        </button>
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
@@ -115,27 +106,6 @@
                     }
                 } catch (error) {
                     alert('Error updating stock');
-                }
-            });
-        });
-
-        // Delete product
-        document.querySelectorAll('.delete-btn').forEach(button => {
-            button.addEventListener('click', async function () {
-                if (confirm('Are you sure you want to delete this product?')) {
-                    const productId = this.dataset.id;
-                    try {
-                        const response = await fetch(`/admin/products/${productId}`, {
-                            method: 'DELETE'
-                        });
-
-                        if (response.ok) {
-                            alert('Product deleted successfully');
-                            location.reload();
-                        }
-                    } catch (error) {
-                        alert('Error deleting product');
-                    }
                 }
             });
         });

@@ -238,14 +238,4 @@ router.patch('/products/stock/:id', notAuthorized, async (req, res) => {
     }
 });
 
-// Delete product
-router.delete('/products/:id', notAuthorized, async (req, res) => {
-    try {
-        await Product.findByIdAndDelete(req.params.id);
-        res.status(200).send('Product deleted');
-    } catch (error) {
-        res.status(500).send('Error deleting product');
-    }
-});
-
 module.exports = router;
