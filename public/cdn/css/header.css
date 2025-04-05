@@ -11,12 +11,15 @@
     z-index: 1000;
 }
 
-.mobileHeader .leftHeader, .mobileHeader .rightHeader, .mobileHeader .centerHeader {
+.mobileHeader .leftHeader,
+.mobileHeader .rightHeader,
+.mobileHeader .centerHeader {
     display: flex;
     align-items: center;
 }
 
-.mobileHeader .leftHeader button, .mobileHeader .rightHeader button {
+.mobileHeader .leftHeader button,
+.mobileHeader .rightHeader button {
     background: none;
     border: none;
     cursor: pointer;
@@ -92,6 +95,7 @@
     list-style: none;
     margin: 0;
     padding: 0;
+    margin-bottom: 20px;
 }
 
 .mobileMenuList li a {
@@ -117,7 +121,7 @@
     font-size: 16px;
 }
 
-.mobileMenuFooter {
+/* .mobileMenuFooter {
     padding: 20px;
     border-top: 1px solid #eee;
 }
@@ -142,12 +146,13 @@
 
 .mobileMenuSocials li a:hover {
     color: #666;
-}
+} */
 
 .mobileMenuCopyright {
     text-align: center;
     color: #666;
     font-size: 14px;
+    margin-bottom: 20px;
 }
 
 .mobileMenuCopyright p {
@@ -173,7 +178,7 @@
 }
 
 .mobileMenuFooter {
-    padding: 20px;
+    padding: 20px 20px 0px;
     border-top: 1px solid #eee;
     background-color: #fff;
     width: 100%;
@@ -183,7 +188,7 @@
 
 .mobileMenuSocials {
     list-style: none;
-    margin: 0 0 0px;
+    margin: 0 0 20px;
     padding: 0;
     display: flex;
     justify-content: center;
