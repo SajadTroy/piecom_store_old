@@ -159,6 +159,43 @@
     padding: 10px 20px;
 }
 
+.button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.button-primary {
+    background: #333;
+    color: #fff;
+}
+
+.button-primary:hover {
+    background: #444;
+}
+
+.button-text {
+    background: none;
+    color: #666;
+}
+
+.button-text:hover {
+    color: #333;
+    background: #f5f5f5;
+}
+
+.button svg {
+    width: 20px;
+    height: 20px;
+}
+
 .products-table-container {
     background: #fff;
     padding: 20px;
@@ -304,6 +341,144 @@
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.form-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.admin-form .form-group {
+    margin-bottom: 24px;
+}
+
+.admin-form label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 500;
+}
+
+.admin-form input:not([type="file"]),
+.admin-form select,
+.admin-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.2s;
+}
+
+.admin-form input:focus,
+.admin-form select:focus,
+.admin-form textarea:focus {
+    outline: none;
+    border-color: #333;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.price-input {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.price-input span {
+    position: absolute;
+    left: 10px;
+    color: #666;
+}
+
+.price-input input {
+    padding-left: 25px;
+}
+
+.image-upload {
+    border: 2px dashed #ddd;
+    border-radius: 6px;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    transition: all 0.2s;
+}
+
+.image-upload:hover {
+    border-color: #333;
+}
+
+.image-upload input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.upload-placeholder {
+    color: #666;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.upload-placeholder svg {
+    width: 32px;
+    height: 32px;
+}
+
+.image-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.preview-item {
+    position: relative;
+    width: 100px;
+    height: 100px;
+}
+
+.preview-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.remove-image {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #fff;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    color: #dc3545;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.remove-image:hover {
+    background: #dc3545;
+    color: #fff;
 }
 
 @media (max-width: 768px) {

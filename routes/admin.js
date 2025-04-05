@@ -2,12 +2,24 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
+const multer = require('multer');
+const path = require('path');
 const User = require('../models/user');
 const { send } = require('../email');
 const Order = require('../models/Order');
 const Product = require('../models/Product');
 
 const { notAuthorized, isAuthorized } = require('../middleware/auth');
+
+// Configure multer for image uploads
+const storage = multer.diskStorage({
+    destination: 'public/uploads/products/',
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({ storage });
 
 router.get('/dashboard', notAuthorized, async (req, res) => {
     try {
@@ -124,6 +136,44 @@ router.get('/products', notAuthorized, async (req, res) => {
     } catch (error) {
         console.error('Error loading products:', error);
         res.status(500).send('Error loading products');
+    }
+});
+
+router.get('/products/new', notAuthorized, async (req, res) => {
+    try {
+        const user = await User.findById(req.session.user.id);
+        if (!user?.isAdmin) {
+            return res.redirect('/');
+        }
+        
+        res.render('admin/products/new', {
+            layout: 'admin-layout',
+            user
+        });
+    } catch (error) {
+        console.error('Error loading new product form:', error);
+        res.status(500).send('Error loading form');
+    }
+});
+
+router.post('/products/new', notAuthorized, upload.array('images'), async (req, res) => {
+    try {
+        const user = await User.findById(req.session.user.id);
+        if (!user?.isAdmin) {
+            return res.redirect('/');
+        }
+
+        const imageUrls = req.files.map(file => `/uploads/products/${file.filename}`);
+        const product = new Product({
+            ...req.body,
+            images: imageUrls
+        });
+
+        await product.save();
+        res.redirect('/admin/products');
+    } catch (error) {
+        console.error('Error creating product:', error);
+        res.status(500).send('Error creating product');
     }
 });
 

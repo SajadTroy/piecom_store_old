@@ -59,7 +59,6 @@ const productSchema = new mongoose.Schema({
   },
   discountPercentage: {
     type: Number,
-    required: true,
     min: 0,
     validate: {
       validator: function (v) {
