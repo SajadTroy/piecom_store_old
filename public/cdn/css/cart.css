@@ -62,21 +62,54 @@
 .summary-row {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 12px;
-    color: #666;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.summary-row:last-child {
+    border-bottom: none;
 }
 
 .summary-row.total {
+    font-size: 18px;
     font-weight: 600;
     color: #333;
-    border-top: 1px solid #eee;
-    padding-top: 12px;
-    margin-top: 12px;
+    border-top: 2px solid #eee;
+    border-bottom: none;
+    margin-top: 10px;
+}
+
+.item-subtotal {
+    font-weight: 500;
+    color: #333;
+    margin-top: 10px;
 }
 
 .checkout-btn {
     width: 100%;
     margin-top: 20px;
+    background: #00aa69;
+    color: #fff;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.checkout-btn:hover {
+    background: #008f58;
+}
+
+.checkout-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
 }
 
 @media (max-width: 768px) {

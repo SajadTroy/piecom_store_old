@@ -36,8 +36,14 @@ router.post('/cart/add', notAuthorized, async (req, res) => {
         const existingProduct = cart.products.find(p => p.productId.toString() === productId);
         if (existingProduct) {
             existingProduct.quantity = quantity;
+            existingProduct.subtotal = product.sellingPrice * quantity;
         } else {
-            cart.products.push({ productId, quantity });
+            cart.products.push({ 
+                productId, 
+                quantity,
+                price: product.sellingPrice,
+                subtotal: product.sellingPrice * quantity
+            });
         }
 
         // Calculate total price
@@ -47,7 +53,7 @@ router.post('/cart/add', notAuthorized, async (req, res) => {
 
         cart.totalPrice = cart.products.reduce((total, item) => {
             const product = cartProducts.find(p => p._id.toString() === item.productId.toString());
-            return total + (product.sellingPrice * item.quantity);
+            return total + item.subtotal;
         }, 0);
 
         await cart.save();
@@ -99,8 +105,11 @@ router.patch('/cart/update', notAuthorized, async (req, res) => {
         if (!cartProduct) return res.status(404).send('Product not in cart');
 
         cartProduct.quantity = quantity;
-        await cart.save();
+        cartProduct.subtotal = product.sellingPrice * quantity;
         
+        cart.totalPrice = cart.products.reduce((total, item) => total + item.subtotal, 0);
+
+        await cart.save();
         res.status(200).send('Cart updated');
     } catch (error) {
         console.error('Error updating cart:', error);
@@ -118,6 +127,8 @@ router.delete('/cart/remove', notAuthorized, async (req, res) => {
         if (!cart) return res.status(404).send('Cart not found');
 
         cart.products = cart.products.filter(p => p.productId.toString() !== productId);
+        cart.totalPrice = cart.products.reduce((total, item) => total + item.subtotal, 0);
+
         await cart.save();
 
         res.status(200).send('Item removed');
