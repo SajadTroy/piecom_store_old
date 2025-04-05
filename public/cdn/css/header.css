@@ -1,3 +1,4 @@
+/* Mobile header */
 .mobileHeader {
     width: 100%;
     height: 50px;
@@ -35,6 +36,7 @@
     width: 120px;
 }
 
+/* Mobile menu */
 
 .mobileMenu {
     position: fixed;
