@@ -22,10 +22,6 @@ router.post('/cart/add', notAuthorized, async (req, res) => {
             return res.status(404).send('Product not found');
         }
 
-        if (product.stockQuantity < quantity) {
-            return res.status(400).send('Not enough stock');
-        }
-
         // Find existing cart or create new one
         let cart = await Cart.findOne({ userId });
         if (!cart) {
@@ -35,9 +31,22 @@ router.post('/cart/add', notAuthorized, async (req, res) => {
         // Check if product already in cart
         const existingProduct = cart.products.find(p => p.productId.toString() === productId);
         if (existingProduct) {
-            existingProduct.quantity = quantity;
-            existingProduct.subtotal = product.sellingPrice * quantity;
+            // Add new quantity to existing quantity
+            const newQuantity = existingProduct.quantity + quantity;
+            
+            // Check if new total quantity exceeds stock
+            if (newQuantity > product.stockQuantity) {
+                return res.status(400).send('Not enough stock');
+            }
+            
+            existingProduct.quantity = newQuantity;
+            existingProduct.subtotal = product.sellingPrice * newQuantity;
         } else {
+            // Check if initial quantity exceeds stock
+            if (quantity > product.stockQuantity) {
+                return res.status(400).send('Not enough stock');
+            }
+
             cart.products.push({ 
                 productId, 
                 quantity,
@@ -45,16 +54,6 @@ router.post('/cart/add', notAuthorized, async (req, res) => {
                 subtotal: product.sellingPrice * quantity
             });
         }
-
-        // Calculate total price
-        const cartProducts = await Product.find({
-            '_id': { $in: cart.products.map(p => p.productId) }
-        });
-
-        cart.totalPrice = cart.products.reduce((total, item) => {
-            const product = cartProducts.find(p => p._id.toString() === item.productId.toString());
-            return total + item.subtotal;
-        }, 0);
 
         await cart.save();
         res.status(200).send('Added to cart');
