@@ -15,12 +15,17 @@
 
             <div class="form-group">
                 <label for="phone">Phone Number</label>
-                <input type="text" id="phone" name="phone" required pattern="[0-9]{10}">
+                <input type="tel" id="phone" name="phone" required pattern="[0-9]{10}" placeholder="10 digit mobile number">
             </div>
+
             <div class="form-actions">
                 <button type="submit" class="button button-primary">
                     <span class="button-text">Register</span>
                 </button>
+            </div>
+
+            <div class="form-footer">
+                Already have an account? <a href="/auth/login">Login</a>
             </div>
         </form>
     </div>
