@@ -38,23 +38,23 @@
             <a href="/products/recommended" class="view-all">View All</a>
         </div>
         <div class="products-grid">
-            <% for(let i = 0; i < 5; i++) { %>
-                <a href="/product/dasdjhbfedf" class="product-link">
+            <% recommendedProducts.forEach(product => { %>
+                <a href="/product/<%= product._id %>" class="product-link">
                     <div class="product-card">
                         <div class="product-image">
-                            <img src="https://picsum.photos/400" alt="Product Image">
+                            <img src="<%= product.images[0] %>" alt="<%= product.name %>">
                         </div>
                         <div class="product-details">
-                            <h3 class="product-title">Sample Product with a Long Title That May Need Two Lines</h3>
+                            <h3 class="product-title"><%= product.name %></h3>
                             <div class="product-prices">
-                                <span class="selling-price">₹599</span>
-                                <span class="original-price">₹999</span>
-                                <span class="discount">40% off</span>
+                                <span class="selling-price">₹<%= product.sellingPrice %></span>
+                                <span class="original-price">₹<%= product.productPrice %></span>
+                                <span class="discount"><%= product.discountPercentage.toFixed(0) %>% off</span>
                             </div>
                         </div>
                     </div>
                 </a>
-            <% } %>
+            <% }) %>
         </div>
     </section>
 
@@ -64,23 +64,23 @@
             <a href="/products/trending" class="view-all">View All</a>
         </div>
         <div class="products-grid">
-            <% for(let i = 0; i < 5; i++) { %>
-                <a href="/product/dasdjhbfedf" class="product-link">
+            <% trendingProducts.forEach(product => { %>
+                <a href="/product/<%= product._id %>" class="product-link">
                     <div class="product-card">
                         <div class="product-image">
-                            <img src="https://picsum.photos/400" alt="Product Image">
+                            <img src="<%= product.images[0] %>" alt="<%= product.name %>">
                         </div>
                         <div class="product-details">
-                            <h3 class="product-title">Sample Product with a Long Title That May Need Two Lines</h3>
+                            <h3 class="product-title"><%= product.name %></h3>
                             <div class="product-prices">
-                                <span class="selling-price">₹599</span>
-                                <span class="original-price">₹999</span>
-                                <span class="discount">40% off</span>
+                                <span class="selling-price">₹<%= product.sellingPrice %></span>
+                                <span class="original-price">₹<%= product.productPrice %></span>
+                                <span class="discount"><%= product.discountPercentage.toFixed(0) %>% off</span>
                             </div>
                         </div>
                     </div>
                 </a>
-            <% } %>
+            <% }) %>
         </div>
     </section>
 
@@ -90,23 +90,23 @@
             <a href="/products/latest" class="view-all">View All</a>
         </div>
         <div class="products-grid">
-            <% for(let i = 0; i < 5; i++) { %>
-                <a href="/product/dasdjhbfedf" class="product-link">
+            <% latestProducts.forEach(product => { %>
+                <a href="/product/<%= product._id %>" class="product-link">
                     <div class="product-card">
                         <div class="product-image">
-                            <img src="https://picsum.photos/400" alt="Product Image">
+                            <img src="<%= product.images[0] %>" alt="<%= product.name %>">
                         </div>
                         <div class="product-details">
-                            <h3 class="product-title">Sample Product with a Long Title That May Need Two Lines</h3>
+                            <h3 class="product-title"><%= product.name %></h3>
                             <div class="product-prices">
-                                <span class="selling-price">₹599</span>
-                                <span class="original-price">₹999</span>
-                                <span class="discount">40% off</span>
+                                <span class="selling-price">₹<%= product.sellingPrice %></span>
+                                <span class="original-price">₹<%= product.productPrice %></span>
+                                <span class="discount"><%= product.discountPercentage.toFixed(0) %>% off</span>
                             </div>
                         </div>
                     </div>
                 </a>
-            <% } %>
+            <% }) %>
         </div>
     </section>
 </div>
