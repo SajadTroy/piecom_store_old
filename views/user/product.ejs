@@ -12,25 +12,29 @@
                         </div>
                     <% }) %>
                 </div>
-                <button class="carousel-button prev">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                        <path d="M15 18l-6-6 6-6"/>
-                    </svg>
-                </button>
-                <button class="carousel-button next">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                        <path d="M9 18l6-6-6-6"/>
-                    </svg>
-                </button>
-                <div class="carousel-dots"></div>
+                <% if (product.images.length > 1) { %>
+                    <button class="carousel-button prev">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M15 18l-6-6 6-6"/>
+                        </svg>
+                    </button>
+                    <button class="carousel-button next">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M9 18l6-6-6-6"/>
+                        </svg>
+                    </button>
+                    <div class="carousel-dots"></div>
+                <% } %>
             </div>
+            <% if (product.images.length > 1) { %>
             <div class="gallery-thumbs">
                 <% product.images.forEach((image, index)=> { %>
                     <button class="thumb <%= index === 0 ? 'active' : '' %>" data-index="<%= index %>">
                         <img src="<%= image %>" alt="Thumbnail">
                     </button>
-                    <% }) %>
+                <% }) %>
             </div>
+            <% } %>
         </div>
 
         <!-- Product Info Section -->
