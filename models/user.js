@@ -29,17 +29,14 @@ const userSchema = new mongoose.Schema({
   shippingAddress: {
     street: {
       type: String,
-      required: true,
       default: '',
     },
     city: {
       type: String,
-      required: true,
       default: '',
     },
     state: {
       type: String,
-      required: true,
       enum: [
         'Andaman and Nicobar Islands',
         'Andhra Pradesh',
@@ -76,46 +73,35 @@ const userSchema = new mongoose.Schema({
         'Tripura',
         'Uttar Pradesh',
         'Uttarakhand',
-        'West Bengal'
+        'West Bengal',
+        ''
       ],
       default: '',
     },
     zip: {
       type: String,
-      required: true,
       default: '',
-      validate: {
-        validator: function (v) {
-          return /^\d{6}$/.test(v);
-        },
-        message: (props) => `${props.value} is not a valid zip code!`,
-      },
     },
     country: {
       type: String,
-      required: true,
       default: 'India',
       enum: ['India'],
     },
     addressLine1: {
       type: String,
-      required: true,
       default: '',
     },
     addressLine2: {
       type: String,
-      required: true,
       default: '',
     },
     landmark: {
       type: String,
-      required: true,
       default: '',
     },
   },
   dateOfBirth: {
     type: Date,
-    required: true,
     default: Date.now,
   },
   password: {

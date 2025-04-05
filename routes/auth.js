@@ -12,33 +12,21 @@ router.get('/register', isAuthorized, (req, res) => {
 });
 
 router.post('/register', isAuthorized, async (req, res) => {
-  const { email, phone, instagram } = req.body;
+  const { email, phone} = req.body;
 
   try {
-    const profileData = await scrapeInstagramProfile(instagram);
-
-    // Generate a random password
     const password = crypto.randomBytes(8).toString('hex');
-
-    if (!profileData || !profileData.username) {
-      return res.status(400).send('Instagram profile not found or private');
-    }
 
     const newUser = new User({
       email,
       phone,
-      instagram: {
-        profile_name: profileData.name,
-        username: profileData.username,
-        profile_url: profileData.profilePhoto,
-      },
       password: await bcrypt.hash(password, 10)
     });
 
     await newUser.save();
 
     // Send the password to the user's email
-    const subject = 'Welcome to BeforeYou!';
+    const subject = 'Welcome to Piecom!';
     const text = `Your account has been created successfully. Your password is: ${password}`;
     const html = `<p>Your account has been created successfully.</p><p><strong>Password:</strong> ${password}</p>`;
     send(email, subject, text, html, (err) => {
