@@ -1,3 +1,4 @@
+const e = require('express');
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
@@ -6,28 +7,117 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
     trim: true,
+    lowercase: true,
+    validate: {
+      validator: function (v) {
+        return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(v);
+      },
+      message: (props) => `${props.value} is not a valid email address!`,
+    },
   },
   phone: {
     type: String,
     required: true,
     trim: true,
+    unique: true,
+    validate: {
+      validator: function (v) {
+        return /^\d{10}$/.test(v);
+      },
+      message: (props) => `${props.value} is not a valid phone number!`,
+    },
   },
-  instagram: {
-    profile_name: {
+  shippingAddress: {
+    street: {
       type: String,
       required: true,
-      trim: true,
+      default: '',
     },
-    username: {
+    city: {
       type: String,
       required: true,
-      trim: true,
+      default: '',
     },
-    profile_url: {
+    state: {
       type: String,
       required: true,
-      trim: true,
+      enum: [
+        'Andaman and Nicobar Islands',
+        'Andhra Pradesh',
+        'Arunachal Pradesh',
+        'Assam',
+        'Bihar',
+        'Chandigarh',
+        'Chhattisgarh',
+        'Dadra and Nagar Haveli and Daman and Diu',
+        'Delhi',
+        'Goa',
+        'Gujarat',
+        'Haryana',
+        'Himachal Pradesh',
+        'Jammu and Kashmir',
+        'Jharkhand',
+        'Karnataka',
+        'Kerala',
+        'Ladakh',
+        'Lakshadweep',
+        'Madhya Pradesh',
+        'Maharashtra',
+        'Manipur',
+        'Meghalaya',
+        'Mizoram',
+        'Nagaland',
+        'Odisha',
+        'Puducherry',
+        'Punjab',
+        'Rajasthan',
+        'Sikkim',
+        'Tamil Nadu',
+        'Telangana',
+        'Tripura',
+        'Uttar Pradesh',
+        'Uttarakhand',
+        'West Bengal'
+      ],
+      default: '',
     },
+    zip: {
+      type: String,
+      required: true,
+      default: '',
+      validate: {
+        validator: function (v) {
+          return /^\d{6}$/.test(v);
+        },
+        message: (props) => `${props.value} is not a valid zip code!`,
+      },
+    },
+    country: {
+      type: String,
+      required: true,
+      default: 'India',
+      enum: ['India'],
+    },
+    addressLine1: {
+      type: String,
+      required: true,
+      default: '',
+    },
+    addressLine2: {
+      type: String,
+      required: true,
+      default: '',
+    },
+    landmark: {
+      type: String,
+      required: true,
+      default: '',
+    },
+  },
+  dateOfBirth: {
+    type: Date,
+    required: true,
+    default: Date.now,
   },
   password: {
     type: String,
