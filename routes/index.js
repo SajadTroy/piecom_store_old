@@ -32,7 +32,11 @@ router.get('/', async (req, res) => {
         ]);
         
         res.render('user/index', { 
-            title: 'Home', 
+            meta: {
+                title: 'Piecom',
+                description: 'Your one-stop shop for all electronics.',
+                image: '/images/default.jpg'
+            }, 
             user,
             latestProducts,
             trendingProducts,
@@ -87,6 +91,11 @@ router.get('/products/:type', async (req, res) => {
         }
 
         res.render('user/products', {
+            meta: {
+                title,
+                description: `Browse our ${title.toLowerCase()}.`,
+                image: '/images/default-product.jpg'
+            },
             title,
             user,
             products,
@@ -121,7 +130,11 @@ router.get('/product/:id', async (req, res) => {
         }).limit(10);
 
         res.render('user/product', {
-            title: product.name,
+            meta: {
+                title: product.name,
+                description: product.description,
+                image: product.image
+            },
             user,
             product,
             similarProducts
