@@ -6,12 +6,22 @@
         <div class="product-gallery">
             <div class="gallery-main">
                 <div class="carousel-inner">
-                    <% product.images.forEach(image=> { %>
+                    <% product.images.forEach(image => { %>
                         <div class="carousel-slide">
                             <img src="<%= image %>" alt="<%= product.name %>">
                         </div>
-                        <% }) %>
+                    <% }) %>
                 </div>
+                <button class="carousel-button prev">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path d="M15 18l-6-6 6-6"/>
+                    </svg>
+                </button>
+                <button class="carousel-button next">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                </button>
                 <div class="carousel-dots"></div>
             </div>
             <div class="gallery-thumbs">
@@ -124,7 +134,17 @@
         const gallery = document.querySelector('.product-gallery');
         const slides = gallery.querySelectorAll('.carousel-slide');
         const thumbs = gallery.querySelectorAll('.thumb');
+        const dotsContainer = gallery.querySelector('.carousel-dots');
         let currentSlide = 0;
+
+        // Create dots for gallery
+        slides.forEach((_, i) => {
+            const dot = document.createElement('button');
+            dot.classList.add('carousel-dot');
+            if (i === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToSlide(i));
+            dotsContainer.appendChild(dot);
+        });
 
         // Thumbnail clicks
         thumbs.forEach((thumb, index) => {
@@ -155,6 +175,11 @@
             thumbs.forEach((thumb, i) => {
                 thumb.classList.toggle('active', i === currentSlide);
             });
+
+            // Update dots
+            dotsContainer.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlide);
+            });
         }
 
         // Enhanced quantity controls
@@ -163,33 +188,32 @@
         const increaseBtn = document.querySelector('#increaseQty');
         const maxStock = <%= product.stockQuantity %>;
 
-        function updateQuantity(increment) {
-            const currentQty = parseInt(quantityInput.value);
-            const newQty = increment ? currentQty + 1 : currentQty - 1;
-
-            if (newQty >= 1 && newQty <= maxStock) {
-                quantityInput.value = newQty;
-                updateQuantityButtons();
+        decreaseBtn.addEventListener('click', function() {
+            let currentValue = parseInt(quantityInput.value);
+            if (currentValue > 1) {
+                quantityInput.value = currentValue - 1;
+                updateQuantityState();
             }
-        }
-
-        function updateQuantityButtons() {
-            const currentQty = parseInt(quantityInput.value);
-            decreaseBtn.disabled = currentQty <= 1;
-            increaseBtn.disabled = currentQty >= maxStock;
-        }
-
-        decreaseBtn.addEventListener('click', () => updateQuantity(false));
-        increaseBtn.addEventListener('click', () => updateQuantity(true));
-
-        // Prevent manual input
-        quantityInput.addEventListener('keydown', (e) => e.preventDefault());
-        quantityInput.addEventListener('input', () => {
-            let value = parseInt(quantityInput.value);
-            if (isNaN(value)) value = 1;
-            value = Math.max(1, Math.min(value, maxStock));
-            quantityInput.value = value;
-            updateQuantityButtons();
         });
+
+        increaseBtn.addEventListener('click', function() {
+            let currentValue = parseInt(quantityInput.value);
+            if (currentValue < maxStock) {
+                quantityInput.value = currentValue + 1;
+                updateQuantityState();
+            }
+        });
+
+        function updateQuantityState() {
+            const currentValue = parseInt(quantityInput.value);
+            decreaseBtn.disabled = currentValue <= 1;
+            increaseBtn.disabled = currentValue >= maxStock;
+        }
+
+        // Initialize quantity state
+        updateQuantityState();
+
+        // Prevent direct input
+        quantityInput.addEventListener('keydown', e => e.preventDefault());
     });
 </script>
