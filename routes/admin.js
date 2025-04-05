@@ -274,4 +274,55 @@ router.patch('/orders/:id/status', notAuthorized, async (req, res) => {
     }
 });
 
+router.get('/users', notAuthorized, async (req, res) => {
+    try {
+        const user = await User.findById(req.session.user.id);
+        if (!user?.isAdmin) {
+            return res.redirect('/');
+        }
+
+        // Get users with order counts
+        const users = await User.aggregate([
+            {
+                $lookup: {
+                    from: 'orders',
+                    localField: '_id',
+                    foreignField: 'userId',
+                    as: 'orders'
+                }
+            },
+            {
+                $project: {
+                    email: 1,
+                    phone: 1,
+                    isVerified: 1,
+                    isBlocked: 1,
+                    createdAt: 1,
+                    orderCount: { $size: '$orders' }
+                }
+            },
+            { $sort: { createdAt: -1 } }
+        ]);
+
+        res.render('admin/users', {
+            layout: 'admin-layout',
+            user,
+            users
+        });
+    } catch (error) {
+        console.error('Error loading users:', error);
+        res.status(500).send('Error loading users');
+    }
+});
+
+router.patch('/users/:id/toggle-block', notAuthorized, async (req, res) => {
+    try {
+        const { blocked } = req.body;
+        await User.findByIdAndUpdate(req.params.id, { isBlocked: blocked });
+        res.status(200).send('User status updated');
+    } catch (error) {
+        res.status(500).send('Error updating user status');
+    }
+});
+
 module.exports = router;
