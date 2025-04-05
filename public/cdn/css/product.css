@@ -103,6 +103,17 @@
     color: #333;
 }
 
+.product-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.2s ease;
+}
+
+.product-link:hover {
+    transform: translateY(-2px);
+}
+
 @media (min-width: 768px) {
     .products-grid {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
