@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
+const mongoose = require('mongoose');
 const User = require('../models/user');
 const { send } = require('../email');
 
@@ -10,6 +11,7 @@ const { notAuthorized, isAuthorized } = require('../middleware/auth');
 const Cart = require('../models/Cart');
 const Product = require('../models/Product');
 const razorpay = require('../config/razorpay');
+const Order = require('../models/Order');
 
 // Add to cart
 router.post('/cart/add', notAuthorized, async (req, res) => {
@@ -195,10 +197,33 @@ router.post('/create-order', notAuthorized, async (req, res) => {
     }
 });
 
+// Get orders page
+router.get('/orders', notAuthorized, async (req, res) => {
+    try {
+        const user = await User.findById(req.session.user.id).select('-password');
+        const orders = await Order.find({ userId: user.id })
+            .populate('products.productId')
+            .sort({ createdAt: -1 });
+
+        res.render('user/orders', {
+            meta: {
+                title: 'My Orders',
+                description: 'View your orders',
+                image: '/images/default.jpg'
+            },
+            user,
+            orders
+        });
+    } catch (error) {
+        console.error('Error loading orders:', error);
+        res.status(500).send('Error loading orders');
+    }
+});
+
 // Verify payment
 router.post('/verify-payment', notAuthorized, async (req, res) => {
     try {
-        const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+        const { razorpay_order_id, razorpay_payment_id, razorpay_signature, address } = req.body;
         const userId = req.session.user.id;
 
         // Verify signature
@@ -211,13 +236,52 @@ router.post('/verify-payment', notAuthorized, async (req, res) => {
             return res.status(400).send('Payment verification failed');
         }
 
-        // Create order in database
-        // Add your order creation logic here
+        const cart = await Cart.findOne({ userId }).populate('products.productId');
+        
+        // Check stock availability
+        for (const item of cart.products) {
+            const product = item.productId;
+            if (product.stockQuantity < item.quantity) {
+                return res.status(400).send(`${product.name} is out of stock`);
+            }
+        }
 
-        // Clear cart after successful order
+        // Create order
+        const order = new Order({
+            userId,
+            address,
+            products: cart.products.map(item => ({
+                productId: item.productId._id,
+                quantity: item.quantity,
+                price: item.productId.sellingPrice,
+                subtotal: item.subtotal
+            })),
+            totalAmount: cart.totalPrice + 60 + Math.round((cart.totalPrice + 60) * 0.02),
+            paymentId: razorpay_payment_id,
+            orderId: razorpay_order_id,
+            deliveryFee: 60,
+            paymentFee: Math.round((cart.totalPrice + 60) * 0.02),
+            paymentStatus: 'Completed'
+        });
+
+        await order.save();
+
+        // Update product stock
+        for (const item of cart.products) {
+            await Product.findByIdAndUpdate(
+                item.productId._id,
+                { $inc: { stockQuantity: -item.quantity } }
+            );
+        }
+
+        // Clear cart
         await Cart.findOneAndDelete({ userId });
 
-        res.json({ success: true });
+        res.json({ 
+            success: true,
+            orderId: order._id 
+        });
+
     } catch (error) {
         console.error('Payment verification error:', error);
         res.status(500).send('Error verifying payment');
