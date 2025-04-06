@@ -9,6 +9,7 @@ const { notAuthorized, isAuthorized } = require('../middleware/auth');
 
 const Cart = require('../models/Cart');
 const Product = require('../models/Product');
+const razorpay = require('../config/razorpay');
 
 // Add to cart
 router.post('/cart/add', notAuthorized, async (req, res) => {
@@ -20,7 +21,7 @@ router.post('/cart/add', notAuthorized, async (req, res) => {
         const product = await Product.findById(productId);
         if (!product) {
             return res.status(404).send('Product not found');
-        }
+        } 
 
         // Find existing cart or create new one
         let cart = await Cart.findOne({ userId });
@@ -159,6 +160,67 @@ router.delete('/cart/remove', notAuthorized, async (req, res) => {
     } catch (error) {
         console.error('Error removing item:', error);
         res.status(500).send('Error removing item');
+    }
+});
+
+// Create order
+router.post('/create-order', notAuthorized, async (req, res) => {
+    try {
+        const { address } = req.body;
+        const userId = req.session.user.id;
+        
+        const cart = await Cart.findOne({ userId }).populate('products.productId');
+        if (!cart || !cart.products.length) {
+            return res.status(400).send('Cart is empty');
+        }
+
+        const amount = cart.totalPrice + 60; // Total + delivery charge
+        const paymentFee = Math.round((amount * 2) / 100); // 2% payment gateway fee
+        const totalAmount = amount + paymentFee;
+
+        const order = await razorpay.orders.create({
+            amount: totalAmount * 100, // Convert to paisa
+            currency: 'INR',
+            receipt: `order_${Date.now()}`
+        });
+
+        res.json({ 
+            order,
+            amount: totalAmount,
+            paymentFee
+        });
+    } catch (error) {
+        console.error('Order creation error:', error);
+        res.status(500).send('Error creating order');
+    }
+});
+
+// Verify payment
+router.post('/verify-payment', notAuthorized, async (req, res) => {
+    try {
+        const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+        const userId = req.session.user.id;
+
+        // Verify signature
+        const generated = crypto
+            .createHmac('sha256', process.env.RAZORPAY_SECRET)
+            .update(razorpay_order_id + '|' + razorpay_payment_id)
+            .digest('hex');
+
+        if (generated !== razorpay_signature) {
+            return res.status(400).send('Payment verification failed');
+        }
+
+        // Create order in database
+        // Add your order creation logic here
+
+        // Clear cart after successful order
+        await Cart.findOneAndDelete({ userId });
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Payment verification error:', error);
+        res.status(500).send('Error verifying payment');
     }
 });
 
