@@ -84,6 +84,31 @@ router.get('/cart', notAuthorized, async (req, res) => {
     }
 });
 
+// Get checkout page
+router.get('/checkout', notAuthorized, async (req, res) => {
+    try {
+        let user = await User.findById(req.session.user.id).select('-password');
+        let cart = await Cart.findOne({ userId: user.id }).populate('products.productId');
+
+        if (!cart || !cart.products.length) {
+            return res.redirect('/cart');
+        }
+
+        res.render('user/checkout', {
+            meta: {
+                title: 'Checkout',
+                description: 'Complete your order',
+                image: '/images/default.jpg'
+            },
+            user,
+            cart
+        });
+    } catch (error) {
+        console.error('Error loading checkout:', error);
+        res.status(500).send('Error loading checkout');
+    }
+});
+
 // Update cart item quantity
 router.patch('/cart/update', notAuthorized, async (req, res) => {
     try {

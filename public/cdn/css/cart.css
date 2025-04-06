@@ -112,12 +112,56 @@
     cursor: not-allowed;
 }
 
+.checkout-grid {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 20px;
+}
+
+.delivery-address {
+    background: #fff;
+    padding: 20px;
+}
+
+.address-form .form-group {
+    margin-bottom: 20px;
+}
+
+.address-form label {
+    display: block;
+    margin-bottom: 8px;
+    color: #666;
+    font-size: 14px;
+}
+
+.address-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    resize: vertical;
+}
+
+.sticky {
+    position: sticky;
+    top: 90px;
+}
+
 @media (max-width: 768px) {
     .cart-grid {
         grid-template-columns: 1fr;
     }
     
     .cart-summary {
+        position: static;
+    }
+
+    .checkout-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .sticky {
         position: static;
     }
 }

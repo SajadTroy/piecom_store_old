@@ -1,0 +1,56 @@
+<link rel="stylesheet" href="/cdn/css/product.css">
+<link rel="stylesheet" href="/cdn/css/cart.css">
+
+<div class="products-container">
+    <div class="page-header">
+        <h1>Checkout</h1>
+    </div>
+
+    <div class="checkout-grid">
+        <div class="delivery-address">
+            <div class="info-card">
+                <h3>Delivery Address</h3>
+                <form id="addressForm" class="address-form">
+                    <div class="form-group">
+                        <label for="address">Full Address</label>
+                        <textarea id="address" name="address" rows="3" required><%= user.address || '' %></textarea>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="cart-summary sticky">
+            <div class="info-card">
+                <h3>Order Summary</h3>
+                <% if (cart.products.length > 0) { %>
+                    <div class="summary-row">
+                        <span>Items (<%= cart.products.length %>)</span>
+                        <span>₹<%= cart.totalPrice %></span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Delivery Charges</span>
+                        <span>₹60</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total Amount</span>
+                        <span>₹<%= cart.totalPrice + 60 %></span>
+                    </div>
+                    <button class="button button-primary checkout-btn" id="placeOrder">Place Order</button>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('placeOrder').addEventListener('click', async function() {
+    const address = document.getElementById('address').value.trim();
+    if (!address) {
+        alert('Please enter delivery address');
+        return;
+    }
+    // Here you'll add the order placement logic
+    // For now, just show an alert
+    alert('Order placement will be implemented here');
+});
+</script>
