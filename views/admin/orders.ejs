@@ -28,9 +28,8 @@
                         </thead>
                         <tbody id="ordersTableBody">
                             <% orders.forEach(order=> { %>
-                                <tr data-status="<%= order.deliveryStatus.toLowerCase() %>">
-                                    <td>#<%= order._id.slice(-6) %>
-                                    </td>
+                                <tr data-status="<%= order.deliveryStatus ? order.deliveryStatus.toLowerCase() : 'unknown' %>">
+                                    <td>#<%= String(order._id).slice(-6) %></td>
                                     <td>
                                         <%= order.userId.email %>
                                     </td>

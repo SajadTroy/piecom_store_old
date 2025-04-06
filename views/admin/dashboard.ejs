@@ -133,8 +133,8 @@
                             <td></td>
                                 <%= order.customer %>
                             </td>
-                            <td><span class="status <%= order.status.toLowerCase() %>">
-                                    <%= order.status %>
+                            <td><span class="status <%= order.status ? order.status.toLowerCase() : 'unknown' %>">
+                                    <%= order.status || 'Unknown' %>
                                 </span></td>
                             <td>₹<%= order.amount %>
                             </td>

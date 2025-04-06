@@ -94,9 +94,9 @@ router.get('/dashboard', notAuthorized, async (req, res) => {
 
         const formattedRecentOrders = recentOrders.map(order => ({
             _id: order._id.toString(),
-            customer: order.userId.email,
-            status: order.deliveryStatus,
-            amount: order.totalPrice,
+            customer: order.userId?.email || 'Unknown',
+            status: order.status || 'Unknown', // Ensure status is defined
+            amount: order.totalAmount || 0,
             date: order.createdAt
         }));
 
@@ -251,10 +251,15 @@ router.get('/orders', notAuthorized, async (req, res) => {
         .populate('userId', 'email')
         .sort({ createdAt: -1 });
 
+        const formattedOrders = orders.map(order => ({
+            ...order.toObject(),
+            deliveryStatus: order.deliveryStatus || 'Unknown' // Ensure deliveryStatus is defined
+        }));
+
         res.render('admin/orders', {
             layout: 'admin-layout',
             user,
-            orders
+            orders: formattedOrders
         });
     } catch (error) {
         console.error('Error loading orders:', error);
